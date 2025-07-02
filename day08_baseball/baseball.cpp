@@ -50,8 +50,14 @@ public:
 			for (int number = 0; number < 3; ++number) {
 				if (isEqualNumber(guessNumber, number))
 					result.strikes++;
-				else if (guessNumber[number] == question[(number + 1) % 3] || guessNumber[(number + 1) % 3] == question[2])
-					result.balls++;			
+				else {
+					for (int ballNumber = 0; ballNumber < 3; ++ballNumber) {
+						if (ballNumber != number && guessNumber[number] == question[ballNumber]) {
+							result.balls++;
+							break;
+						}
+					}
+				}
 			}
 		}
 		return result;
