@@ -43,23 +43,21 @@ public:
 		assertIllegalArgument(guessNumber);
 		GuessResult result = {false, 0, 0};
 		
-		if (guessNumber == question) {
-			return { true , 3, 0 };
-		}
-		else {
-			for (int number = 0; number < 3; ++number) {
-				if (isEqualNumber(guessNumber, number))
-					result.strikes++;
-				else {
-					for (int ballNumber = 0; ballNumber < 3; ++ballNumber) {
-						if (ballNumber != number && guessNumber[number] == question[ballNumber]) {
-							result.balls++;
-							break;
-						}
+
+		for (int number = 0; number < 3; ++number) {
+			if (isEqualNumber(guessNumber, number))
+				result.strikes++;
+			else {
+				for (int ballNumber = 0; ballNumber < 3; ++ballNumber) {
+					if (ballNumber != number && guessNumber[number] == question[ballNumber]) {
+						result.balls++;
+						break;
 					}
 				}
 			}
 		}
+	
+		result.solved = (result.strikes == 3);
 		return result;
 	}
 
