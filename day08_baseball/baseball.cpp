@@ -20,6 +20,10 @@ public:
 			|| guessNumber[1] == guessNumber[2];
 	}
 
+	bool isEqualNumber(const string& guessNumber, int number) {
+		return guessNumber[number] == question[number];
+	}
+
 	void assertIllegalArgument(const string& guessNumber) {
 		if (guessNumber.length() != 3) {
 			throw length_error("Must be three letters.");
@@ -37,10 +41,24 @@ public:
 
 	GuessResult guess(const string& guessNumber) {
 		assertIllegalArgument(guessNumber);
-		if (guessNumber == question) {
-			return { true , 3, 0 };
+		GuessResult result = {false, 0, 0};
+		
+
+		for (int number = 0; number < 3; ++number) {
+			if (isEqualNumber(guessNumber, number))
+				result.strikes++;
+			else {
+				for (int ballNumber = 0; ballNumber < 3; ++ballNumber) {
+					if (ballNumber != number && guessNumber[number] == question[ballNumber]) {
+						result.balls++;
+						break;
+					}
+				}
+			}
 		}
-		return { false, 0 ,0 };
+	
+		result.solved = (result.strikes == 3);
+		return result;
 	}
 
 private:
